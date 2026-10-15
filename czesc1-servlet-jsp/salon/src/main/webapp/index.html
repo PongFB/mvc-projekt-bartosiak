@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Salon Samochodowy</title>
+</head>
+<body>
+<h1>Salon Samochodowy – część I</h1>
+
+<p><a href="start">Sprawdź informacje o salonie (wyślij żądanie GET do /start)</a></p>
+
+<h2>Zapytaj o jazdę próbną (żądanie POST)</h2>
+<form action="start" method="post">
+    <p>
+        <label>Twoje imię: <input type="text" name="clientName" required></label>
+    </p>
+    <p>
+        <label>Interesujący Cię model auta: <input type="text" name="carModel" placeholder="np. Ferrari 296 GTB" required></label>
+    </p>
+    <button type="submit">Wyślij zgłoszenie (POST)</button>
+</form>
+</body>
+</html>
