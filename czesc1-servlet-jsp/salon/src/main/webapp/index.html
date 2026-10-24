@@ -7,16 +7,20 @@
 <body>
 <h1>Salon Samochodowy</h1> <!--część I-->
 
+<h2>Pracownik:</h2>
+<ul>
+    <li><a href="cars/add">Dodaj nowy samochód do oferty</a></li> <!--(formularz z walidacją i PRG)-->
+    <li><a href="info?marka=Ferrari&model=296GTB&rok=2024">Informacje o żądaniu HTTP</a></li> <!--(/info z przykładowymi parametrami)-->
+    <li><a href="lifecycle">Licznik i cykl życia servletu</a></li> <!--(/lifecycle)-->
+</ul>
+
+<h2>Klijent:</h2>
 <p><a href="start">Sprawdź informacje o salonie</a></p> <!--wyślij żądanie GET do /start-->
 
 <h2>Zapytaj o jazdę próbną</h2> <!--żądanie POST-->
 <form action="start" method="post">
-    <p>
-        <label>Twoje imię: <input type="text" name="clientName" required></label>
-    </p>
-    <p>
-        <label>Interesujący Cię model auta: <input type="text" name="carModel" placeholder="np. Ferrari 296 GTB" required></label>
-    </p>
+    <p><label>Twoje imię: <input type="text" name="clientName" required></label></p>
+    <p><label>Interesujący Cię model auta: <input type="text" name="carModel" placeholder="np. Ferrari 296 GTB" required></label></p>
     <button type="submit">Wyślij zgłoszenie</button> <!--POST-->
 </form>
 </body>
