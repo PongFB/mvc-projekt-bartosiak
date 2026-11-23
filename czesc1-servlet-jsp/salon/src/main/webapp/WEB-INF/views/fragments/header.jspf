@@ -1,0 +1,21 @@
+<%@ page pageEncoding="UTF-8" %>
+<%-- Wspólny nagłówek i menu nawigacyjne aplikacji Salon Samochodowy --%>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Salon Samochodowy</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+</head>
+<body>
+<header>
+    <h1>Salon Samochodowy</h1>
+    <nav>
+        <a href="${pageContext.request.contextPath}/">Start</a>
+        <a href="${pageContext.request.contextPath}/cars/add">Dodaj samochód</a>
+        <a href="${pageContext.request.contextPath}/start">Jazda próbna</a>
+        <a href="${pageContext.request.contextPath}/info?marka=Ferrari&rok=2024">Info</a>
+        <a href="${pageContext.request.contextPath}/lifecycle">Cykl życia</a>
+    </nav>
+</header>
+<main>

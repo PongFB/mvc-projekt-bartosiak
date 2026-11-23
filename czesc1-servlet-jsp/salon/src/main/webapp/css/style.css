@@ -1,0 +1,14 @@
+body { font-family: system-ui, sans-serif; margin: 0; color: #1e2a33; background: #f8fafb; }
+header { background: #1f3a4d; color: #fff; padding: 14px 24px; }
+header h1 { margin: 0 0 8px 0; font-size: 1.5em; }
+header a { color: #f2a541; margin-right: 16px; text-decoration: none; font-weight: 500; }
+header a:hover { text-decoration: underline; }
+main { max-width: 900px; margin: 24px auto; padding: 24px; background: #fff; border-radius: 6px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); }
+label { display: block; margin-top: 12px; font-weight: 500; }
+input, select { display: block; padding: 6px 8px; width: 320px; margin-top: 4px; border: 1px solid #b8c9d4; border-radius: 4px; }
+button { margin-top: 16px; padding: 8px 16px; background: #1f3a4d; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+button:hover { background: #2c516b; }
+.error { display: block; color: #b5523b; font-size: 0.9em; margin-top: 4px; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border-bottom: 1px solid #d6e4ea; padding: 8px; text-align: left; }
+footer { color: #6b7780; text-align: center; padding: 24px; font-size: 0.9em; }

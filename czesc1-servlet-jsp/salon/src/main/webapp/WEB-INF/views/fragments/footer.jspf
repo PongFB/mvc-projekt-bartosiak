@@ -1,0 +1,10 @@
+<%@ page pageEncoding="UTF-8" %>
+</main>
+<footer>
+    <%-- Komentarz JSP: widoczny tylko w kodzie źródłowym serwera, nie trafia do HTML w przeglądarce --%>
+    <!-- Komentarz HTML: widoczny w źródle strony po stronie przeglądarki (Ctrl+U) -->
+    <p>Dodane samochody w tej sesji: <strong>${empty sessionScope.addedCount ? 0 : sessionScope.addedCount}</strong></p>
+    <p>Salon Samochodowy &copy; 2026</p>
+</footer>
+</body>
+</html>

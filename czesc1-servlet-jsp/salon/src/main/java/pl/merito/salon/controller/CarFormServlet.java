@@ -1,102 +1,87 @@
 package pl.merito.salon.controller;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.Year;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet("/cars/add")
 public class CarFormServlet extends HttpServlet {
 
+    private static final String VIEW = "/WEB-INF/views/cars/form.jsp";
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-        renderForm(req, resp, new ArrayList<>(), "", "", "", "");
+            throws ServletException, IOException {
+        req.getRequestDispatcher(VIEW).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
+            throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        String brand = trim(req.getParameter("brand"));
-        String model = trim(req.getParameter("model"));
-        String year = trim(req.getParameter("year"));
-        String price = trim(req.getParameter("price"));
-
-        List<String> errors = new ArrayList<>();
-
-        if (brand.isEmpty()) {
-            errors.add("Brak marki samochodu.");
-        }
-        if (model.isEmpty()) {
-            errors.add("Brak modelu samochodu.");
-        }
-
-        try {
-            int y = Integer.parseInt(year);
-            int currentYear = Year.now().getValue();
-            if (y < 1885 || y > currentYear) {
-                errors.add("Rok produkcji musi mieścić się w zakresie 1885–" + currentYear + ".");
-            }
-        } catch (NumberFormatException e) {
-            errors.add("Rok produkcji musi być liczbą całkowitą.");
-        }
-
-        try {
-            double p = Double.parseDouble(price.replace(",", "."));
-            if (p <= 0) {
-                errors.add("Cena samochodu musi być większa od zera.");
-            }
-        } catch (NumberFormatException e) {
-            errors.add("Cena samochodu musi być poprawną liczbą.");
-        }
+        Map<String, String> errors = validate(req);
 
         if (!errors.isEmpty()) {
-            renderForm(req, resp, errors, brand, model, year, price);
+            req.setAttribute("errors", errors);
+            req.getRequestDispatcher(VIEW).forward(req, resp);
             return;
         }
 
-        String fullCarName = brand + " " + model + " (" + year + ")";
-        String encoded = URLEncoder.encode(fullCarName, StandardCharsets.UTF_8);
-        resp.sendRedirect(req.getContextPath() + "/cars/added?car=" + encoded);
+        String brand = req.getParameter("brand").trim();
+        String model = req.getParameter("model").trim();
+        String year = req.getParameter("year").trim();
+        String price = req.getParameter("price").trim();
+
+        HttpSession session = req.getSession();
+        Integer added = (Integer) session.getAttribute("addedCount");
+        session.setAttribute("addedCount", added == null ? 1 : added + 1);
+        session.setAttribute("lastCar", brand + " " + model + " (" + year + ", " + price + " PLN)");
+
+        resp.sendRedirect(req.getContextPath() + "/cars/added");
     }
 
-    private String trim(String value) {
-        return value == null ? "" : value.trim();
-    }
+    private Map<String, String> validate(HttpServletRequest req) {
+        Map<String, String> errors = new HashMap<>();
 
-    private void renderForm(HttpServletRequest req, HttpServletResponse resp, List<String> errors,
-                            String brand, String model, String year, String price) throws IOException {
-        resp.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = resp.getWriter();
-        out.println("<!DOCTYPE html><html lang='pl'><head><meta charset='UTF-8'><title>Dodaj samochód</title></head><body>");
-        out.println("<h1>Dodaj samochód do oferty salonu</h1>");
+        String brand = req.getParameter("brand");
+        String model = req.getParameter("model");
+        String yearParam = req.getParameter("year");
+        String priceParam = req.getParameter("price");
 
-        if (!errors.isEmpty()) {
-            out.println("<div style='color:red; border:1px solid red; padding:10px; margin-bottom:15px;'>");
-            out.println("<strong>Formularz zawiera błędy:</strong><ul>");
-            for (String error : errors) {
-                out.println("<li>" + error + "</li>");
-            }
-            out.println("</ul></div>");
+        if (brand == null || brand.isBlank()) {
+            errors.put("brand", "Marka samochodu jest wymagana.");
+        }
+        if (model == null || model.isBlank()) {
+            errors.put("model", "Model samochodu jest wymagany.");
         }
 
-        out.println("<form method='post'>");
-        out.println("<p><label>Marka: <input type='text' name='brand' value='" + brand + "' placeholder='np. Ferrari'></label></p>");
-        out.println("<p><label>Model: <input type='text' name='model' value='" + model + "' placeholder='np. 296 GTB'></label></p>");
-        out.println("<p><label>Rok produkcji: <input type='text' name='year' value='" + year + "' placeholder='np. 2024'></label></p>");
-        out.println("<p><label>Cena (PLN): <input type='text' name='price' value='" + price + "' placeholder='np. 1450000'></label></p>");
-        out.println("<button type='submit'>Zapisz samochód</button>");
-        out.println("</form>");
-        out.println("<p><a href='" + req.getContextPath() + "/'>Powrót na stronę główną</a></p>");
-        out.println("</body></html>");
+        try {
+            int year = Integer.parseInt(yearParam == null ? "" : yearParam.trim());
+            int currentYear = Year.now().getValue();
+            if (year < 1900 || year > currentYear) {
+                errors.put("year", "Rok produkcji musi mieścić się w zakresie 1900–" + currentYear + ".");
+            }
+        } catch (NumberFormatException e) {
+            errors.put("year", "Rok produkcji musi być liczbą całkowitą.");
+        }
+
+        try {
+            double price = Double.parseDouble(priceParam == null ? "" : priceParam.trim().replace(",", "."));
+            if (price <= 0) {
+                errors.put("price", "Cena samochodu musi być większa od zera.");
+            }
+        } catch (NumberFormatException e) {
+            errors.put("price", "Cena samochodu musi być poprawną liczbą.");
+        }
+
+        return errors;
     }
 }
