@@ -12,6 +12,7 @@
     <h1>Salon Samochodowy</h1>
     <nav>
         <a href="${pageContext.request.contextPath}/">Start</a>
+        <a href="${pageContext.request.contextPath}/cars">Samochody</a>
         <a href="${pageContext.request.contextPath}/cars/add">Dodaj samochód</a>
         <a href="${pageContext.request.contextPath}/start">Jazda próbna</a>
         <a href="${pageContext.request.contextPath}/info?marka=Ferrari&rok=2024">Info</a>

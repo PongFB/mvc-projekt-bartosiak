@@ -10,7 +10,7 @@
         <input type="text" name="clientName" value="${param.clientName}" required>
     </label>
     <label>Interesujący Cię model auta
-        <input type="text" name="carModel" value="${param.carModel}" placeholder="np. Ferrari 296 GTB" required>
+        <input type="text" name="carModel" value="${param.carModel}" placeholder="np. Honda CR-V" required>
     </label>
     <button type="submit">Wyślij zgłoszenie</button>
 </form>
